@@ -51,10 +51,10 @@
   }
 
   .logo {
-    display: flex; align-items: center;
-    text-decoration: none; line-height: 0;
+    font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em;
+    text-decoration: none; color: var(--white);
   }
-  .logo img { height: 28px; width: auto; display: block; }
+  .logo span { color: var(--lime); }
 
   .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
   .nav-links a {
@@ -406,8 +406,8 @@
   /* ── FOOTER ── */
   footer { background: var(--black); padding: 52px 64px 32px; border-top: 1px solid var(--border); }
   .footer-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 40px; }
-  .footer-logo { display: block; line-height: 0; }
-  .footer-logo img { height: 34px; width: auto; display: block; }
+  .footer-logo { font-size: 1.9rem; font-weight: 900; color: var(--white); }
+  .footer-logo span { color: var(--lime); }
   .footer-tagline { font-size: 0.78rem; color: rgba(192,192,192,0.4); font-weight: 300; margin-top: 4px; }
   .footer-links { display: flex; gap: 28px; }
   .footer-links a {
@@ -468,7 +468,7 @@
 
 <!-- NAV -->
 <nav id="navbar">
-  <a href="#" class="logo"><img src="logo.svg" alt="Mozz.in"></a>
+  <a href="#" class="logo">mozz<span>.</span>in</a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#services">Services</a></li>
     <li><a href="#founder">Founder</a></li>
@@ -737,7 +737,7 @@
 <footer>
   <div class="footer-top">
     <div>
-      <div class="footer-logo"><img src="logo.svg" alt="Mozz.in"></div>
+      <div class="footer-logo">mozz<span>.</span>in</div>
       <div class="footer-tagline">Brand. Build. Grow.</div>
       <a href="mailto:amozzdigi@gmail.com" class="footer-email footer-email-brand">amozzdigi@gmail.com</a>
     </div>
