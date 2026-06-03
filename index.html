@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mozz.in — Brand. Build. Grow.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:   #050505;
+    --darkgray:#18181B;
+    --card:    #111113;
+    --lime:    #B6FF00;
+    --silver:  #C0C0C0;
+    --white:   #F5F5F5;
+    --border:  rgba(192,192,192,0.12);
+    --lime-dim: rgba(182,255,0,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--lime); border-radius: 2px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 64px;
+    transition: background 0.3s, padding 0.3s, border-color 0.3s;
+    border-bottom: 1px solid transparent;
+  }
+  nav.scrolled {
+    background: rgba(5,5,5,0.96);
+    backdrop-filter: blur(16px);
+    border-color: var(--border);
+    padding-top: 14px; padding-bottom: 14px;
+  }
+
+  .logo {
+    font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em;
+    text-decoration: none; color: var(--white);
+  }
+  .logo span { color: var(--lime); }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+  .nav-links a {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--silver);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--lime); }
+
+  .nav-cta {
+    background: var(--lime) !important;
+    color: var(--black) !important;
+    padding: 9px 22px; border-radius: 4px;
+    font-weight: 700 !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85 !important; }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: 0.3s; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 130px 64px 90px;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(182,255,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(182,255,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute; top: -200px; right: -100px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(182,255,0,0.12) 0%, transparent 65%);
+    z-index: 0; pointer-events: none;
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 820px; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--lime-dim); border: 1px solid rgba(182,255,0,0.25);
+    padding: 6px 16px; border-radius: 100px;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--lime);
+    margin-bottom: 28px;
+    opacity: 0; transform: translateY(16px);
+    animation: fadeUp 0.6s 0.2s forwards;
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .hero-h1 {
+    font-size: clamp(3rem, 6.5vw, 5.8rem);
+    font-weight: 900; line-height: 1.0;
+    letter-spacing: -0.03em; color: var(--white);
+    opacity: 0; transform: translateY(24px);
+    animation: fadeUp 0.7s 0.35s forwards;
+  }
+  .hero-h1 .lime { color: var(--lime); }
+  .hero-h1 .outline {
+    -webkit-text-stroke: 2px var(--silver);
+    color: transparent;
+  }
+
+  .hero-sub {
+    margin-top: 28px; max-width: 520px;
+    font-size: 1rem; font-weight: 300; color: var(--silver); line-height: 1.75;
+    opacity: 0; transform: translateY(16px);
+    animation: fadeUp 0.7s 0.5s forwards;
+  }
+
+  .hero-actions {
+    margin-top: 44px; display: flex; gap: 14px; flex-wrap: wrap;
+    opacity: 0; transform: translateY(16px);
+    animation: fadeUp 0.7s 0.65s forwards;
+  }
+
+  .btn-lime {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--lime); color: var(--black);
+    padding: 14px 32px; border-radius: 4px;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.04em;
+    text-decoration: none; transition: opacity 0.2s, transform 0.2s;
+  }
+  .btn-lime:hover { opacity: 0.85; transform: translateY(-2px); }
+  .btn-lime svg { width: 18px; height: 18px; }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border); color: var(--silver);
+    padding: 14px 28px; border-radius: 4px;
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em;
+    text-decoration: none; transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--lime); color: var(--lime); transform: translateY(-2px); }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    background: var(--lime); overflow: hidden;
+    padding: 12px 0;
+  }
+  .ticker-track {
+    display: flex; gap: 0;
+    animation: ticker 24s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    display: inline-flex; align-items: center; gap: 16px;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--black);
+    padding: 0 32px;
+  }
+  .ticker-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--black); opacity: 0.4; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── SECTIONS COMMON ── */
+  section { padding: 100px 64px; }
+
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--lime);
+    margin-bottom: 14px;
+  }
+  .section-tag::before { content: '//'; opacity: 0.5; }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800; line-height: 1.1;
+    letter-spacing: -0.02em; color: var(--white);
+  }
+  .section-title .lime { color: var(--lime); }
+  .section-title .outline {
+    -webkit-text-stroke: 1.5px var(--silver);
+    color: transparent;
+  }
+
+  /* ── SERVICES ── */
+  #services { background: var(--darkgray); }
+  .services-intro { max-width: 580px; margin-bottom: 56px; }
+  .services-intro p { color: var(--silver); font-weight: 300; margin-top: 16px; font-size: 0.95rem; line-height: 1.78; }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .service-card {
+    background: var(--darkgray);
+    padding: 36px 30px;
+    transition: background 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--lime);
+    transition: height 0.3s;
+  }
+  .service-card:hover { background: var(--card); }
+  .service-card:hover::before { height: 100%; }
+
+  .service-num {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
+    color: var(--lime); opacity: 0.6; margin-bottom: 18px;
+  }
+  .service-title {
+    font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 10px;
+  }
+  .service-desc {
+    font-size: 0.84rem; color: var(--silver); font-weight: 300; line-height: 1.72;
+  }
+
+  /* ── FOUNDER ── */
+  #founder {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+    background: var(--black);
+  }
+
+  .founder-img-wrap {
+    position: relative;
+  }
+  .founder-img-frame {
+    position: relative; overflow: hidden;
+    border-radius: 4px;
+    aspect-ratio: 3/4;
+  }
+  .founder-img-frame img {
+    width: 100%; height: 100%; object-fit: cover;
+    object-position: top;
+    filter: grayscale(20%) contrast(1.05);
+    transition: transform 0.5s, filter 0.5s;
+  }
+  .founder-img-frame:hover img { transform: scale(1.03); filter: grayscale(0%) contrast(1.05); }
+  .founder-img-frame::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(5,5,5,0.7) 0%, transparent 50%);
+  }
+  .founder-corner {
+    position: absolute; top: -10px; right: -10px;
+    width: 60px; height: 60px;
+    border-top: 3px solid var(--lime);
+    border-right: 3px solid var(--lime);
+    border-radius: 0 4px 0 0;
+  }
+  .founder-corner-bl {
+    position: absolute; bottom: -10px; left: -10px;
+    width: 60px; height: 60px;
+    border-bottom: 3px solid var(--lime);
+    border-left: 3px solid var(--lime);
+    border-radius: 0 0 0 4px;
+  }
+  .founder-label {
+    position: absolute; bottom: 24px; left: 24px; z-index: 2;
+  }
+  .founder-name-big {
+    font-size: 1.5rem; font-weight: 800; color: var(--white);
+    letter-spacing: -0.01em;
+  }
+  .founder-handle {
+    font-size: 0.75rem; font-weight: 600; color: var(--lime);
+    letter-spacing: 0.1em; margin-top: 2px;
+  }
+
+  .founder-text .section-title { margin-bottom: 20px; }
+  .founder-text p { font-size: 0.95rem; color: var(--silver); font-weight: 300; line-height: 1.82; margin-bottom: 18px; }
+  .founder-text p strong { color: var(--white); font-weight: 600; }
+
+  .founder-skills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .skill-tag {
+    background: var(--lime-dim); border: 1px solid rgba(182,255,0,0.2);
+    padding: 6px 14px; border-radius: 100px;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--lime);
+  }
+
+  /* ── PROCESS ── */
+  #process { background: var(--darkgray); }
+  .process-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; margin-top: 56px; background: var(--border); }
+  .process-step {
+    background: var(--darkgray); padding: 40px 28px;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .process-step:hover { background: var(--card); }
+  .process-num {
+    font-size: 2.8rem; font-weight: 900;
+    color: var(--lime); opacity: 0.2;
+    letter-spacing: -0.04em; line-height: 1;
+    margin-bottom: 14px;
+  }
+  .process-title { font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+  .process-desc { font-size: 0.83rem; color: var(--silver); font-weight: 300; line-height: 1.7; }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { background: var(--black); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 52px; }
+  .testimonial-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 32px 28px; border-radius: 4px;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .testimonial-card:hover { border-color: rgba(182,255,0,0.3); transform: translateY(-4px); }
+  .stars { color: var(--lime); font-size: 0.8rem; margin-bottom: 16px; letter-spacing: 2px; }
+  .testimonial-quote {
+    font-size: 0.9rem; color: var(--silver);
+    font-weight: 300; line-height: 1.72; margin-bottom: 24px;
+    font-style: italic;
+  }
+  .testimonial-author { font-size: 0.85rem; font-weight: 700; color: var(--white); }
+  .testimonial-company { font-size: 0.75rem; color: var(--silver); opacity: 0.5; margin-top: 3px; }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: var(--darkgray);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+  }
+  .contact-info p { color: var(--silver); font-weight: 300; font-size: 0.95rem; line-height: 1.8; margin: 18px 0 32px; }
+  .contact-detail {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 0.88rem; color: var(--silver); margin-bottom: 16px;
+  }
+  .contact-detail svg { width: 17px; height: 17px; stroke: var(--lime); min-width: 17px; margin-top: 2px; }
+  .contact-detail a { color: var(--silver); text-decoration: none; transition: color 0.2s; }
+  .contact-detail a:hover { color: var(--lime); }
+
+  .wa-float {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #25D366;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .wa-float:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 28px rgba(37, 211, 102, 0.55);
+  }
+  .wa-float svg { width: 28px; height: 28px; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 14px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; color: var(--silver); text-transform: uppercase; }
+  .form-group input, .form-group textarea, .form-group select {
+    border: 1px solid var(--border); background: var(--black);
+    padding: 12px 16px; border-radius: 4px;
+    font-family: 'Poppins', sans-serif; font-size: 0.88rem;
+    color: var(--white); outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(192,192,192,0.35); }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--lime); }
+  .form-group textarea { resize: vertical; min-height: 110px; }
+  .form-group select { appearance: none; cursor: pointer; color: var(--silver); }
+  .form-group select option { background: var(--black); }
+  .form-submit {
+    background: var(--lime); color: var(--black);
+    border: none; padding: 14px 32px;
+    font-family: 'Poppins', sans-serif; font-size: 0.85rem;
+    font-weight: 700; letter-spacing: 0.06em;
+    cursor: pointer; border-radius: 4px;
+    transition: opacity 0.2s, transform 0.2s;
+    align-self: flex-start;
+  }
+  .form-submit:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--black); padding: 52px 64px 32px; border-top: 1px solid var(--border); }
+  .footer-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 40px; }
+  .footer-logo { font-size: 1.9rem; font-weight: 900; color: var(--white); }
+  .footer-logo span { color: var(--lime); }
+  .footer-tagline { font-size: 0.78rem; color: rgba(192,192,192,0.4); font-weight: 300; margin-top: 4px; }
+  .footer-links { display: flex; gap: 28px; }
+  .footer-links a {
+    font-size: 0.78rem; color: rgba(192,192,192,0.5); text-decoration: none;
+    letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--lime); }
+  .footer-bottom { border-top: 1px solid var(--border); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-size: 0.75rem; color: rgba(192,192,192,0.3); }
+  .footer-wa { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: rgba(192,192,192,0.4); text-decoration: none; transition: color 0.2s; }
+  .footer-wa:hover { color: var(--lime); }
+  .footer-wa svg { width: 15px; height: 15px; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s, transform 0.7s; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  /* ── MOBILE ── */
+  @media (max-width: 960px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(5,5,5,0.98); flex-direction: column; padding: 24px; border-bottom: 1px solid var(--border); gap: 20px; }
+    .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    section { padding: 70px 24px; }
+    #hero { padding: 110px 24px 60px; }
+    #founder { grid-template-columns: 1fr; gap: 40px; }
+    .process-grid { grid-template-columns: 1fr 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    #contact { grid-template-columns: 1fr; gap: 50px; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-top { flex-direction: column; gap: 28px; }
+    .footer-links { flex-wrap: wrap; gap: 16px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .process-grid { grid-template-columns: 1fr; }
+    .hero-h1 { font-size: 2.6rem; }
+    .wa-float { right: 16px; bottom: 16px; width: 52px; height: 52px; }
+    .wa-float svg { width: 26px; height: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="logo">mozz<span>.</span>in</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#founder">Founder</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#testimonials">Clients</a></li>
+    <li><a href="https://wa.me/918590465026" target="_blank" class="nav-cta">Let's Talk</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Full-Service Branding Agency · Kerala, India
+    </div>
+    <h1 class="hero-h1">
+      We Build<br>
+      Brands That<br>
+      <span class="lime">Mean Business</span>
+    </h1>
+    <p class="hero-sub">
+      Mozz.in is a bold branding agency helping startups and businesses grow through strategy, design, digital marketing, and complete brand-building solutions.
+    </p>
+    <div class="hero-actions">
+      <a href="https://wa.me/918590465026" target="_blank" class="btn-lime">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        Start a Project
+      </a>
+      <a href="#services" class="btn-ghost">Explore Services →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">Brand Identity <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Social Media Marketing <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Content Marketing <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Website Development <span class="ticker-dot"></span></span>
+    <span class="ticker-item">App Development <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Startup Mentoring <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Branding Consulting <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Complete Business Branding <span class="ticker-dot"></span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">Brand Identity <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Social Media Marketing <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Content Marketing <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Website Development <span class="ticker-dot"></span></span>
+    <span class="ticker-item">App Development <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Startup Mentoring <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Branding Consulting <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Complete Business Branding <span class="ticker-dot"></span></span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-intro reveal">
+    <div class="section-tag">What We Do</div>
+    <h2 class="section-title">Everything Your Brand<br><span class="lime">Needs to Dominate</span></h2>
+    <p>One agency. Every service. Zero compromise. We cover the full spectrum of brand-building so you can focus on growing.</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-title">Brand Identity & Strategy</div>
+      <p class="service-desc">Logo, visual identity, brand guidelines, and a strategy that makes your brand unforgettable and consistent across every touchpoint.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-title">Content Marketing</div>
+      <p class="service-desc">Strategic content that attracts, educates, and converts — blogs, videos, email campaigns, and storytelling tailored to your audience.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-title">Social Media Marketing</div>
+      <p class="service-desc">Full-stack social management — strategy, design, scheduling, and analytics across Instagram, LinkedIn, YouTube, and more.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <div class="service-title">Startup Mentoring</div>
+      <p class="service-desc">Hands-on guidance for founders — from idea validation and positioning to go-to-market strategy and investor-ready brand building.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">05</div>
+      <div class="service-title">Website Development</div>
+      <p class="service-desc">Fast, beautiful, conversion-optimised websites — from landing pages to full-scale web platforms, built to perform and impress.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">06</div>
+      <div class="service-title">App Development</div>
+      <p class="service-desc">Mobile and web apps that deliver seamless user experiences — concept to launch, UI/UX to full-stack development.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">07</div>
+      <div class="service-title">Branding Consulting</div>
+      <p class="service-desc">Deep-dive brand audits and consulting to realign your brand with your business goals and market expectations.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">08</div>
+      <div class="service-title">Complete Business Branding</div>
+      <p class="service-desc">End-to-end branding packages for new and growing businesses — one partner, every requirement, zero compromise.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section id="founder">
+  <div class="founder-img-wrap reveal">
+    <div class="founder-corner"></div>
+    <div class="founder-corner-bl"></div>
+    <div class="founder-img-frame">
+      <img src="founder.jpeg" alt="Vijilraj – Founder of Mozz.in">
+      <div class="founder-label">
+        <div class="founder-name-big">Vijilraj</div>
+        <div class="founder-handle">@amozz · Founder & Brand Strategist</div>
+      </div>
+    </div>
+  </div>
+  <div class="founder-text reveal">
+    <div class="section-tag">The Founder</div>
+    <h2 class="section-title">The Mind That<br>Builds <span class="lime">Iconic Brands</span></h2>
+    <p>Meet <strong>Vijilraj</strong>, the founder behind Mozz.in — known in the industry as <strong>amozz</strong>. A brand strategist, digital marketer, and startup mentor with a passion for building businesses that stand out and scale.</p>
+    <p>Vijilraj started Mozz.in with one mission: to make bold, strategic branding accessible to every business — from first-time founders to established enterprises. His hands-on approach means every client gets strategy-first thinking, not just pretty visuals.</p>
+    <p>Based in <strong>Kerala, India</strong> — serving clients across India and beyond.</p>
+    <div class="founder-skills">
+      <span class="skill-tag">Brand Strategy</span>
+      <span class="skill-tag">Digital Marketing</span>
+      <span class="skill-tag">Startup Mentor</span>
+      <span class="skill-tag">Content Strategy</span>
+      <span class="skill-tag">Web & App Dev</span>
+      <span class="skill-tag">Social Media</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="reveal">
+    <div class="section-tag">How We Work</div>
+    <h2 class="section-title">A Process Built<br>for <span class="lime">Real Results</span></h2>
+  </div>
+  <div class="process-grid reveal">
+    <div class="process-step">
+      <div class="process-num">01</div>
+      <div class="process-title">Discover</div>
+      <p class="process-desc">We deep-dive into your business, goals, audience, and competitors to build a clear strategic foundation.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">02</div>
+      <div class="process-title">Strategise</div>
+      <p class="process-desc">We craft a tailored brand and marketing roadmap aligned with your growth objectives and timeline.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">03</div>
+      <div class="process-title">Create</div>
+      <p class="process-desc">Our team designs and builds — from visual identity to websites, campaigns, and all digital assets.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">04</div>
+      <div class="process-title">Launch & Grow</div>
+      <p class="process-desc">We go live and keep optimising — tracking performance and refining for continuous, compounding growth.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<!-- <section id="testimonials">
+  <div class="reveal">
+    <div class="section-tag">Client Love</div>
+    <h2 class="section-title">Words From Those<br>Who <span class="lime">Trusted Us</span></h2>
+  </div>
+  <div class="testimonials-grid reveal">
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-quote">"Mozz.in completely transformed how our brand looks and feels online. Strategy and execution were spot on — our enquiries doubled within two months."</p>
+      <div class="testimonial-author">Arjun Menon</div>
+      <div class="testimonial-company">Founder, TechBridge Solutions</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-quote">"Vijilraj is not just a designer — he's a true brand strategist. He understood our startup vision better than we did and built something powerful."</p>
+      <div class="testimonial-author">Priya Nair</div>
+      <div class="testimonial-company">Co-Founder, GreenLeaf Organics</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-quote">"From website to social media, everything feels cohesive and professional. The team at Mozz.in delivered beyond expectations, on time, every time."</p>
+      <div class="testimonial-author">Rahul Sharma</div>
+      <div class="testimonial-company">CEO, CloudNine Hospitality</div>
+    </div>
+  </div>
+</section> -->
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-info reveal">
+    <div class="section-tag">Get in Touch</div>
+    <h2 class="section-title">Let's Build<br>Something <span class="lime">Bold</span></h2>
+    <p>Ready to take your brand to the next level? Reach out — we'd love to hear about your project.</p>
+    <div class="contact-detail">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+      <a href="mailto:hello@mozz.in">hello@mozz.in</a>
+    </div>
+    <div class="contact-detail">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253"/></svg>
+      <a href="https://mozz.in" target="_blank">mozz.in</a>
+    </div>
+    <div class="contact-detail">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+      Kerala, India
+    </div>
+  </div>
+  <div class="reveal">
+    <div class="contact-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="John Doe">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="you@company.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Service</label>
+        <select>
+          <option value="">Select a service...</option>
+          <option>Brand Identity & Strategy</option>
+          <option>Content Marketing</option>
+          <option>Social Media Marketing</option>
+          <option>Startup Mentoring</option>
+          <option>Website Development</option>
+          <option>App Development</option>
+          <option>Complete Business Branding</option>
+          <option>Branding Consulting</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell Us About Your Project</label>
+        <textarea placeholder="Briefly describe your brand, goals, and what you need help with..."></textarea>
+      </div>
+      <button class="form-submit" onclick="handleFormSubmit(this)">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">mozz<span>.</span>in</div>
+      <div class="footer-tagline">Brand. Build. Grow.</div>
+    </div>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="#founder">Founder</a>
+      <a href="#process">Process</a>
+      <a href="#testimonials">Clients</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Mozz.in · All rights reserved · Founded by Vijilraj (amozz)</div>
+    <a href="https://wa.me/918590465026" target="_blank" class="footer-wa">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      +91 85904 65026
+    </a>
+  </div>
+</footer>
+
+<a href="https://wa.me/918590465026" target="_blank" rel="noopener noreferrer" class="wa-float" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+  });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = (i * 0.07) + 's';
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+  revealEls.forEach(el => observer.observe(el));
+
+  function handleFormSubmit(btn) {
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = '✓ Message Sent!';
+      btn.style.background = '#22c55e';
+      setTimeout(() => {
+        btn.textContent = 'Send Message →';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3000);
+    }, 1200);
+  }
+</script>
+</body>
+</html>
