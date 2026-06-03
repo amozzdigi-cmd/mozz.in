@@ -1,7 +1,0 @@
-{
-  "name": "mozz-in",
-  "private": true,
-  "scripts": {
-    "build:config": "node scripts/build-config.js"
-  }
-}
