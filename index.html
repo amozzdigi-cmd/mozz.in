@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mozz.in — Brand. Build. Grow.</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300&display=swap" rel="stylesheet">
@@ -49,10 +51,10 @@
   }
 
   .logo {
-    font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em;
-    text-decoration: none; color: var(--white);
+    display: flex; align-items: center;
+    text-decoration: none; line-height: 0;
   }
-  .logo span { color: var(--lime); }
+  .logo img { height: 28px; width: auto; display: block; }
 
   .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
   .nav-links a {
@@ -404,8 +406,8 @@
   /* ── FOOTER ── */
   footer { background: var(--black); padding: 52px 64px 32px; border-top: 1px solid var(--border); }
   .footer-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 40px; }
-  .footer-logo { font-size: 1.9rem; font-weight: 900; color: var(--white); }
-  .footer-logo span { color: var(--lime); }
+  .footer-logo { display: block; line-height: 0; }
+  .footer-logo img { height: 34px; width: auto; display: block; }
   .footer-tagline { font-size: 0.78rem; color: rgba(192,192,192,0.4); font-weight: 300; margin-top: 4px; }
   .footer-links { display: flex; gap: 28px; }
   .footer-links a {
@@ -466,7 +468,7 @@
 
 <!-- NAV -->
 <nav id="navbar">
-  <a href="#" class="logo">mozz<span>.</span>in</a>
+  <a href="#" class="logo"><img src="logo.svg" alt="Mozz.in"></a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#services">Services</a></li>
     <li><a href="#founder">Founder</a></li>
@@ -735,7 +737,7 @@
 <footer>
   <div class="footer-top">
     <div>
-      <div class="footer-logo">mozz<span>.</span>in</div>
+      <div class="footer-logo"><img src="logo.svg" alt="Mozz.in"></div>
       <div class="footer-tagline">Brand. Build. Grow.</div>
       <a href="mailto:amozzdigi@gmail.com" class="footer-email footer-email-brand">amozzdigi@gmail.com</a>
     </div>
